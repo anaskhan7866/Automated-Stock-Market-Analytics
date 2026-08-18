@@ -1,13 +1,10 @@
 name: Stock Market ETL
 
 on:
-  schedule:
-    - cron: "0 3 * * 1-5"
-
   workflow_dispatch:
 
 jobs:
-  run-etl:
+  test-environment:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,11 +21,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run ETL
-        env:
-          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-        run: python src/etl.py
+      - name: Check Python
+        run: python --version
+
+      - name: Check ETL file
+        run: python -m py_compile src/etl.py
